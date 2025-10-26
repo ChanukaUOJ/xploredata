@@ -50,6 +50,10 @@ interface DataTableProps {
 interface SidebarProps {
   onSelectDataset: (dataset: Dataset) => void;
 }
+interface NewSidebarProps {
+  selectedTab: string;
+  setSelectedTab: (tab: string) => void;
+}
 
 interface FetchedData {
   categories: Category[];
@@ -71,4 +75,14 @@ interface DatasetViewProps {
   onYearChange?: (year: string) => void;
   onComparisonChange?: (year1: string, year2: string) => void;
 }
+
+interface BreadcrumbItem {
+  label: string;
+  path: string;
+}
+
+interface BreadcrumbProps {
+  items: BreadcrumbItem[];
+}
+
 

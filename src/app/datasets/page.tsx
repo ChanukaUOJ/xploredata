@@ -1,35 +1,31 @@
 "use client";
 
-import { DatasetView } from "@/component/dataset-view";
+import CategoryView from "@/component/category-view";
+import Searchbar from "@/component/searchbar";
 import { Sidebar } from "@/component/sidebar";
+import Sidelogo from "@/component/sidelogo";
 import ThemeToggle from "@/hooks/theme-toggle";
+import { Database } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
+import { Footer } from "./Footer";
 
 export default function Home() {
-  const [selectedDataset, setSelectedDataset] =
-    useState<DatasetWithYear | null>(null);
-  const [isDark, setIsDark] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   return (
     <div className={isDark ? "dark" : ""}>
       <div className="flex h-screen bg-background text-foreground overflow-hidden">
-        <Sidebar onSelectDataset={setSelectedDataset} />
         <div className="flex-1 flex flex-col overflow-hidden w-full">
-          {/* <div className="p-4 border-sidebar-border flex justify-end">
-            <ThemeToggle isDark={isDark} onToggle={setIsDark}/>
-          </div> */}
-          <div className="flex-1 overflow-auto">
-            {selectedDataset ? (
-              <DatasetView data={selectedDataset} />
-            ) : (
-              <div className="flex items-center justify-center h-full p-4">
-                <p className="text-muted-foreground text-center">
-                  Select a dataset from the sidebar to view data
-                </p>
-              </div>
-            )}
+          <div className="flex justify-between py-5 md:py-6 px-4 md:px-8 lg:px-36 border-b">
+            <Sidelogo />
+            <Searchbar/>
+            <ThemeToggle isDark={isDark} onToggle={setIsDark} />
           </div>
+          <div className="flex-1 overflow-auto px-4 md:px-8 lg:px-36">
+            <CategoryView />
+          </div>
+          <Footer/>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  
   /* Blue theme color scheme */
   --background: oklch(0.98 0 0);
   --foreground: oklch(0.15 0 0);
@@ -50,11 +49,16 @@
   --sidebar-ring: oklch(0.65 0.2 240);
 
   --export-button: oklch(65% 0.18 145);
+  --input-background: oklch(98.5% 0.002 247.839);
+
+  --category-card: oklch(96.2% 0.044 156.743);
 }
+
+/* bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800 */
 
 .dark {
   /* Dark mode adjustments for blue theme */
-  --background: oklch(18.264% 0.00204 286.052);
+  --background: oklch(21% 0.034 264.665);
   --foreground: oklch(0.95 0 0);
   --card: oklch(0.15 0 0);
   --card-foreground: oklch(0.95 0 0);
@@ -76,7 +80,7 @@
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
 
-  --border: oklch(0.25 0 0);
+  --border: oklch(37.3% 0.034 259.733);
   --input: oklch(0.25 0 0);
   --ring: oklch(0.65 0.2 240);
 
@@ -98,6 +102,9 @@
   --sidebar-ring: oklch(0.65 0.2 240);
 
   --export-button: oklch(65% 0.18 145);
+  --input-background: oklch(27.8% 0.033 256.848);
+  
+  --category-card: oklch(87.046% 0.26369 146.32);
 }
 
 @theme inline {

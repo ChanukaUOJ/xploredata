@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, Database } from "lucide-react";
 import axios from "axios";
 import formatText from "@/utils/common_functions";
+import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import api from "@/utils/axios";
@@ -28,15 +29,11 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     null
   );
   const [isRestoringFromUrl, setIsRestoringFromUrl] = useState(false);
-  // console.log(isRestoringFromUrl)
-
-  // Fetch categories and datasets for a given parentId
+ 
   const fetchCategoriesAndDatasets = async (parentId: string = "") => {
     try {
       const url =
-        parentId === ""
-          ? `/categories`
-          : `/categories?id=${parentId}`;
+        parentId === "" ? `/categories` : `/categories?id=${parentId}`;
 
       const response = await api.get<YearBasedData>(url, {
         headers: { "Content-Type": "application/json" },
@@ -47,16 +44,16 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
       setCategoriesByParentId((prev) => {
         const newMap = new Map(prev);
 
-        const filteredCategories = categories.filter((cat) => {
-          const date = cat.created;
-          if (!date) return false; 
+        // const filteredCategories = categories.filter((cat) => {
+        //   const date = cat.created;
+        //   if (!date) return false;
 
-          const year = date.split("-")[0]; 
+        //   const year = date.split("-")[0];
 
-          return year === "2022"; 
-        });
+        //   return year === "2022";
+        // });
 
-        newMap.set(parentId, filteredCategories);
+        newMap.set(parentId, categories);
         return newMap;
       });
 
@@ -76,7 +73,6 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     }
   };
 
-  // Update URL when dataset is clicked
   const updateUrl = (dataset: Dataset) => {
     const params = new URLSearchParams();
     params.set("datasetId", dataset.name);
@@ -85,7 +81,6 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  // When dataset is clicked
   const handleDatasetClick = async (dataset: Dataset) => {
     try {
       setLoadingDatasetId(dataset.id);
@@ -98,7 +93,6 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     }
   };
 
-  // Recursively expand categories to find a dataset
   const expandPathToDataset = async (
     datasetId: string,
     parentId: string = ""
@@ -129,7 +123,6 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     return false;
   };
 
-  // Restore state from URL on mount
   useEffect(() => {
     const restoreFromUrl = async () => {
       const searchParams = new URLSearchParams();
@@ -165,7 +158,6 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
           setIsRestoringFromUrl(false);
         }
       } else {
-        // Normal initial load
         setInitialLoading(true);
         await fetchCategoriesAndDatasets();
         setInitialLoading(false);
@@ -173,9 +165,8 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     };
 
     restoreFromUrl();
-  }, []); // Only run on mount
+  }, []);
 
-  // Toggle expansion of a category
   const toggleCategory = async (categoryId: string) => {
     const newExpanded = new Set(expandedCategories);
 
@@ -195,7 +186,6 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
     }
   };
 
-  // Recursive rendering of categories and datasets
   const renderCategories = (parentId: string = "", level: number = 0) => {
     const categories = categoriesByParentId.get(parentId) || [];
     const datasets = datasetsByParentId.get(parentId) || [];
@@ -245,18 +235,19 @@ export function Sidebar({ onSelectDataset }: SidebarProps) {
           const isSelected = currentDatasetId === dataset.id;
 
           return (
-            <button
-              key={dataset.id}
-              onClick={() => handleDatasetClick(dataset)}
-              className={`w-full text-left px-3 py-2 hover:cursor-pointer rounded-md text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground ${
-                isLoadingDataset ? "opacity-50 pointer-events-none" : ""
-              } ${isSelected ? "bg-sidebar-accent font-medium" : ""}`}
-              style={{ paddingLeft: `${(level + 1) * 1.25 + 1}rem` }}
-            >
-              {isLoadingDataset
-                ? "Loading..."
-                : dataset.nameExact || dataset.name}
-            </button>
+            
+              <button
+                key={dataset.id}
+                onClick={() => handleDatasetClick(dataset)}
+                className={`w-full text-left px-3 py-2 hover:cursor-pointer rounded-md text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground ${
+                  isLoadingDataset ? "opacity-50 pointer-events-none" : ""
+                } ${isSelected ? "bg-sidebar-accent font-medium" : ""}`}
+                style={{ paddingLeft: `${(level + 1) * 1.25 + 1}rem` }}
+              >
+                {isLoadingDataset
+                  ? "Loading..."
+                  : dataset.nameExact || dataset.name}
+              </button>
           );
         })}
       </div>
