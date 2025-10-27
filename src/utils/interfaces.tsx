@@ -24,12 +24,6 @@ interface Dataset {
   kind: Kind;
 }
 
-// interface DatasetData {
-//   attributeName: string;
-//   columns: string[],
-//   rows: any[]
-// }
-
 interface DatasetData {
   attributeName: string;
   columns: string[];
@@ -75,14 +69,12 @@ interface DatasetViewProps {
   onYearChange?: (year: string) => void;
   onComparisonChange?: (year1: string, year2: string) => void;
 }
-
 interface BreadcrumbItem {
-  label: string;
+  label: string  | undefined;
   path: string;
 }
-
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
+  onItemClick?: (index: number, item: BreadcrumbItem) => void;
 }
-
 

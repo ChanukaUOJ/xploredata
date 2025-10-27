@@ -2,16 +2,6 @@ import React from "react";
 import { ChevronRightIcon, HomeIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-interface BreadcrumbItem {
-  label: string;
-  path: string;
-}
-
-interface BreadcrumbProps {
-  items: BreadcrumbItem[];
-  onItemClick?: (index: number, item: BreadcrumbItem) => void;
-}
-
 export function Breadcrumb({ items, onItemClick }: BreadcrumbProps) {
   const router = useRouter();
 
@@ -29,17 +19,17 @@ export function Breadcrumb({ items, onItemClick }: BreadcrumbProps) {
         <li>
           <button
             onClick={() => {
-              if (onItemClick) onItemClick(0, { label: "Home", path: "/" });
+              if (onItemClick) onItemClick(-1, { label: "Home", path: "/" });
               else router.push("/");
             }}
-            className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors hover:cursor-pointer"
           >
             <HomeIcon className="w-4 h-4" />
             <span>Home</span>
           </button>
         </li>
 
-        {items.map((item, index) => (
+        {items && items.map((item, index) => (
           <li key={index} className="flex items-center gap-2">
             <ChevronRightIcon className="w-4 h-4 text-gray-400" />
             {index === items.length - 1 ? (
